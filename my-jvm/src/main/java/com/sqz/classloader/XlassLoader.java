@@ -7,10 +7,15 @@ import java.lang.reflect.Method;
 
 public class XlassLoader extends ClassLoader {
 
+    public String path;
+
+    public XlassLoader(String path) {
+        this.path = path;
+    }
 
     @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException {
-        InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(name + ".xlass");
+        InputStream inputStream = this.getClass().getResourceAsStream(path+name + ".xlass");
         try {
             int length = inputStream.available();
             byte[] byteArray = new byte[length];
@@ -33,11 +38,8 @@ public class XlassLoader extends ClassLoader {
     }
 
     public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        XlassLoader xlassLoader = new XlassLoader();
+        XlassLoader xlassLoader = new XlassLoader("/");
         Class<?> clazz = xlassLoader.loadClass("Hello");
-        for(Method m:clazz.getDeclaredMethods()) {
-            System.out.println(clazz.getSimpleName() + "." + m.getName());
-        }
         Object instance = clazz.getDeclaredConstructor().newInstance();
         Method method = clazz.getMethod("hello");
         method.setAccessible(true);
@@ -51,4 +53,5 @@ public class XlassLoader extends ClassLoader {
         }
         return targetArray;
     }
+
 }
