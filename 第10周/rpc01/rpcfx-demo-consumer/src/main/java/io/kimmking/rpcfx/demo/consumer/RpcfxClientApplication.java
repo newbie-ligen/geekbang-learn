@@ -1,15 +1,18 @@
 package io.kimmking.rpcfx.demo.consumer;
 
-import io.kimmking.rpcfx.api.Filter;
-import io.kimmking.rpcfx.api.LoadBalancer;
-import io.kimmking.rpcfx.api.Router;
-import io.kimmking.rpcfx.api.RpcfxRequest;
+import com.google.gson.Gson;
+import io.kimmking.rpcfx.api.*;
 import io.kimmking.rpcfx.client.Rpcfx;
 import io.kimmking.rpcfx.demo.api.Order;
 import io.kimmking.rpcfx.demo.api.OrderService;
 import io.kimmking.rpcfx.demo.api.User;
 import io.kimmking.rpcfx.demo.api.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.I0Itec.zkclient.ZkClient;
+import org.apache.curator.RetryPolicy;
+import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.List;
@@ -23,12 +26,18 @@ public class RpcfxClientApplication {
 	// nexus, userserivce -> userdao -> user
 	//
 
-	public static void main(String[] args) {
 
-		// UserService service = new xxx();
-		// service.findById
+	static String path = "/dubbo";
 
-		UserService userService = Rpcfx.create(UserService.class, "http://localhost:8080/","g2","0.0.2");
+	public static void main(String[] args) throws Exception {
+		ZkClient zkClient = new ZkClient("82.156.230.125:2181");
+		zkClient.addAuthInfo("digest", "root:$UNQZ123:".getBytes());
+		String name = UserService.class.getName();
+		List<String> children = zkClient.getChildren(path+"/"+name);
+		int i = new Random().nextInt(children.size());
+		String o = zkClient.readData(path+"/"+name+"/"+children.get(i));
+		InterfaceDes interfaceDes = new Gson().fromJson(o, InterfaceDes.class);
+		UserService userService = Rpcfx.create(UserService.class, interfaceDes.getUrl(),interfaceDes.getGroup(),interfaceDes.getVersion());
 		User user = userService.findById(1);
 		System.out.println("find user id=1 from server: " + user.getName());
 
