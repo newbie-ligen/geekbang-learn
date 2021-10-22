@@ -32,18 +32,12 @@ public class TestController {
     public String send(@RequestBody OrderInfo orderInfo) {
         //减库存
         String script = "local stock= redis.call('HINCRBY',KEYS[1],ARGV[1],ARGV[3]); if stock<0 then redis.call('HINCRBY',KEYS[1],ARGV[1],ARGV[2]); return -1 else return stock end;";
-
-        DefaultRedisScript<String> redisScript = new DefaultRedisScript<>(script,String.class);
-
-        List<String> keys = new ArrayList<>();
-        keys.add(RedisConstrants.ORDER_NUM_HASH_KEY);
-      
-        List<Integer> params = new ArrayList<>();
-        params.add(orderInfo.getGoodsId());
-        params.add(orderInfo.getGoodsNum());
-        params.add(orderInfo.getGoodsNum());
-        String result = (String) redisTemplate.execute(redisScript,keys,params);
-        if(Integer.parseInt(result)>0) {
+        Long result = redisTemplate.getConnectionFactory().getConnection().eval(script.getBytes(),ReturnType.INTEGER,1,
+                RedisConstrants.ORDER_NUM_HASH_KEY.getBytes(),
+                orderInfo.getGoodsId().getBytes(),
+                String.valueOf(orderInfo.getGoodsNum()).getBytes(),
+                String.valueOf(-orderInfo.getGoodsNum()).getBytes());
+        if(result>=0) {
             Gson gson = new Gson();
             sendMsg.sendMessage(RedisConstrants.ORDER_TOPIC, gson.toJson(orderInfo));
             return "下单成功";
