@@ -1,0 +1,18 @@
+#Redisson配置
+singleServerConfig:
+  address: "redis://82.156.230.125:6379"
+  password: $UNQZ123
+  clientName: null
+  database: 1 #选择使用哪个数据库0~15
+  idleConnectionTimeout: 10000
+  connectTimeout: 10000
+  timeout: 3000
+  retryAttempts: 3
+  retryInterval: 1500
+
+
+threads: 0
+nettyThreads: 0
+codec:
+  class: "org.redisson.codec.JsonJacksonCodec"
+transportMode: "NIO"
