@@ -1,0 +1,85 @@
+1.jvm
+JVM虚拟机，是通过在实际的计算机上仿真模拟各种计算机功能来实现的。我们在这一章节主要学习了
+ (1)java字节码技术，包括什么是字节码，如何将java代码生成字节码，字节码是如何运行的
+ (2)jvm类加载器，类的生命周期（加载、验证、准备、解析、初始化、使用、卸载），类的加载时机、类加载器
+ (3)jvm内存模型,jvm内存分为线程私有的栈、本地方法栈和程序计数器，线程共享的堆和方法区(java8元空间)
+ (4)jvm启动参数 包括系统属性，运行参数、堆内存参数、gc参数、分析诊断参数，agent参数等
+ (5)jvm命令行工具java、javac、javap、javadoc、javah、extcheck、jdb、jdeps、jar、keytool、jarsigner、policytool、jps、jstat、jmap、jstack、jcmd、jjs
+ (6)jdk内置图形化工具jconsole、jvisualvm、jmc
+ (7)gc的背景和原理包括垃圾回收算法和垃圾收集器，这块是jvm重点内容
+ (8)jvm调优包括如何解读和分析gc日志，jvm线程和堆分析，内存分析，同时老师还分享了一些调优经验和相关工具
+ 对这一章节内容，后续还要加强实操的部分，还需要多多练习，尤其日志分析，jvm调优部分，和常用分析工具的使用
+ 
+ 
+2.Nio
+NIO模型是一种同步非阻塞IO,主要有三大核心部分:Channel(通道),Buffer(缓冲区), Selector(多路复用器)。我们在这一章节主要学习了
+（1）java socket编程，实现了一个简单的http服务器，并分析了服务器通信的过程
+（2）nio模型和相关概念 阻塞非阻塞、异步同步。5种模型
+（3）netty框架。案列运行，netty的网络模型，优化并实现了一个简单的api网关
+对这一章节，后续将深入学习netty框架，完善和实现课堂的api网关，深入理解nio模型
+
+
+3.并发编程
+java多线程这一章节内容十分重要，基本是必考题。这一章节主要学习了
+（1）多线程基础，为什么会有多线程，java多线程的本质、Thread类、
+（2）线程安全，包括多线程遇到的问题;原子性、有序性、可见性;synchronized、volatile、final
+ (3) 线程池的原理和应用，重要的几个类（Excutor、ExcutorService、ThreadFactory、ThreadPoolExecutor、Excutors、线程池的重要参数和经验
+（4）juc包，锁、原子类、并发工具类
+（5）并发集合、ThreadLocal、经验总结
+这一章节的内容十分重要，后续将多加练习 juc包，锁、原子类、并发工具类部分的内容
+
+
+4.Spring 和 ORM 等框架
+这一章节主要学习了流行的框架spring
+ (1)spring发展和框架设计
+（2）spring aop面向切面编程、bean生命周期加载过程、xml配置原理、messaging等技术
+（3）spring到springboot，springboot核心原理
+（4）数据库连接池 c3p0、dhcp、druid、hikari
+ (5) hibernate和mybatis
+（6）spring springboot集成orm/jpa
+这一章节内容覆盖常用的框架，需要后续好好深入研究和掌握框架原理、阅读框架源码
+
+5.MySQL 数据库和 SQL
+这一章节主要学习了数据库系统和关系型数据库mysql以及sql语言主要包括
+1.数据库原理
+2.mysql，mysql基础，优化，包括配置优化，设计优化
+3.mysql事务和锁，db和sql优化 和一些常见调优分析包括主键、高效分页、锁
+mysql是最常用的数据库，也是常考的点，后续也要深入学习
+
+6.分库分表
+这一章节主要学习了，分库分表相关内容，主要内容包括
+（1）为什么要做数据库拆分
+（2）数据库垂直拆分和水平拆分
+（3）矿建和中间件，包括shardingsphere，tddl
+（4）数据迁移
+（5）分布式事务，包括xa和base,以及tcc/at相关的框架 seata和hmily
+（6）shardingsphere对分布式事务的支持 
+分布式事务是一个比较重要的话题，或许应对seat和hmily进行实操练习，理解其原理
+
+7.RPC 和微服务
+这一章节主要学习了一rpc和微服务相关的内容，包括：
+（1）rpc基本原理和技术框架，如何设计一个rpc,rpc到分布式服务化
+（2）dubbo框架，原理、应用场景、最佳实践和如何阅读dubbo源码
+（3）微服务治理 配置元数据中心 集群分组和版本  注册发现 负载均衡 流控等
+（4）微服务发展历程、应用场景、最佳实践、springcloud技术体系
+微服务和rpc是目前最火的也是应用最广泛的框架，应该深入了解和学习
+
+8.分布式缓存
+分布式缓存这一章需要学习了：
+ (1) 本地缓存 map、hibernate/mybaits cache、spring cache
+ (2) 远程缓存 redis memcached
+ (3)缓存策略 容量 过期策略 ，缓存常见的问题穿透、击穿、雪崩
+ （4）redis 包括基本功能，使用场景，java客户端jedis\lettuce\redission  redis和spring mybatis集成 redis高级功能（持久化，性能优化，lua脚本）
+ （5）redis集群高可用，redisson,hazelcast
+ redis在分布式缓存方面运营非常广，之前没怎么看过redission,通过学习感觉redission很是强大，之后应该好好在学习一下
+ 
+9.分布式消息队列
+分布式消息这一章主要学习了
+（1）kafka 简单的使用，集群配置，高级特性（确认模式、同步发送、异步发送、顺序行保持、消息可靠性传递等）
+（2）rabbitmq
+（3）rocketmq
+（4）pulsar
+（5）课程最后还讲述了如何动手写一个mq，逐步迭代将一个玩具变成一个产品
+分布式消息这一块内容，应该着重学习kafka和rocket，这两个消息中间件
+
+
