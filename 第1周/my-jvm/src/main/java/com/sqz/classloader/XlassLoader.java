@@ -5,6 +5,9 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+/**
+ *继承classLoader重写findClass方法就可以实现自定义ClassLoader
+ */
 public class XlassLoader extends ClassLoader {
 
     public String path;
@@ -39,7 +42,7 @@ public class XlassLoader extends ClassLoader {
 
     public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         XlassLoader xlassLoader = new XlassLoader("/");
-        Class<?> clazz = xlassLoader.loadClass("Hello");
+        Class<?> clazz = xlassLoader.loadClass("/Hello");
         Object instance = clazz.getDeclaredConstructor().newInstance();
         Method method = clazz.getMethod("hello");
         method.setAccessible(true);
